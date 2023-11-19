@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Hello, world!</title>
+    <style>
+        .custom-container-button {
+            background-color: #211D1D;
+            padding: 20px;
+            color: white;
+        }
+
+        .custom-container-body {
+            background-color: #211D1D;
+            padding: 20px;
+            color: white;
+            text-align: center;
+        }
+    </style>
+
+    <script>
+        function changeToHomePage() {
+            var nextPageURL = "./index.html";
+            window.location.href = nextPageURL;
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container custom-container-button">
+        <div class="row">
+            <div class="col-sm md lg xl">
+                <button class="btn btn-outline-light">
+                    <img src="./backButton.png" alt="Back" onclick="changeToHomePage()"
+                        style="width: 25px; height: 25px; text-align: center;">
+                </button>
+            </div>
+            <div class="col-sm custom-container-body">
+                <p style="font-size: 19px;">Soil Moisture Sensor Data Here:</p>
+                <div id="dataContainer" class="col-sm custom-container-button">
+                    <p>Soil Condition:</p>
+                    <p id="output" ></p>
+                </div>
+                <div id="dataContainer" class="col-sm custom-container-button">
+                    <p>Sensor Value:</p>
+                    <p id="output2"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js';
+        import { getDatabase, ref, get } from 'https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js';
+        const firebaseConfig = {
+          apiKey: "AIzaSyD89OmHe57joTajypOB4lG7o4GL0qTFyfM",
+          authDomain: "smart-farming-and-contro-6c7be.firebaseapp.com",
+          databaseURL: "https://smart-farming-and-contro-6c7be-default-rtdb.asia-southeast1.firebasedatabase.app",
+          projectId: "smart-farming-and-contro-6c7be",
+          storageBucket: "smart-farming-and-contro-6c7be.appspot.com",
+          messagingSenderId: "544054428932",
+          appId: "1:544054428932:web:6b87a5cec408896436bc51",
+          measurementId: "G-S31G44VN0C"
+        };
+    
+      const app = initializeApp(firebaseConfig);
+      const database = getDatabase(app);
+      const dataRef = ref(database, 'Moisture');
+      const dataRef2 = ref(database, 'MoistureValue');
+
+      get(dataRef).then((snapshot) => {
+        const data = snapshot.val();
+        console.log(data);
+        document.getElementById("output").innerHTML = data;
+      });
+
+      get(dataRef2).then((snapshot) => {
+        const data = snapshot.val();
+        console.log(data);
+        document.getElementById("output2").innerHTML = data;
+      });
+      </script>
+</body>
+
+</html>
